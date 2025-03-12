@@ -10,7 +10,7 @@ You can install Perplexity CLI directly from the GitHub repository:
 python pip install git+https://github.com/chriscarrollsmith/perplexity-cli.git
 ```
 
-=If you are installing on a system where you don't have administrative privileges, you can install the tool in your user environment with the `--user` flag:
+If you are installing on a system where you don't have administrative privileges, you can install the tool in your user environment with the `--user` flag:
 
 ```bash
 python pip install --user git+https://github.com/chriscarrollsmith/perplexity-cli.git
