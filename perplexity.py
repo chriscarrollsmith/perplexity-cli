@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 import logging
-import argparse
 import os
 import sys
 from dataclasses import dataclass
 import requests
 import json
+import click
 
 AVAILABLE_MODELS = [
     "sonar-reasoning-pro",
@@ -80,16 +80,16 @@ class ApiKeyValidator:
 class Perplexity:
     def __init__(self, args) -> None:
         self.setup = ApiConfig
-        if not ModelValidator.validate(args.model):
+        if not ModelValidator.validate(args["model"]):
             raise InvalidSelectedModelException(
-                f"Invalid model: {args.model}\n"
+                f"Invalid model: {args['model']}\n"
                 f"Available models: {ModelValidator.get_AVAILABLE_MODELS()}"
             )
-        self.setup.model = args.model
-        self.setup.usage = args.usage
-        self.setup.citations = args.citations
-        self.use_glow = args.glow
-        if not args.api_key:
+        self.setup.model = args["model"]
+        self.setup.usage = args["usage"]
+        self.setup.citations = args["citations"]
+        self.use_glow = args["glow"]
+        if not args["api_key"]:
             api_key = ApiKeyValidator.get_api_key_from_system()
             if api_key is None:
                 display("Api key not found on system! ", "red")
@@ -99,7 +99,7 @@ class Perplexity:
                 logger.debug(f"Api key found on system: {api_key}")
                 self.setup.api_key = api_key
         else:
-            self.setup.api_key = args.api_key
+            self.setup.api_key = args["api_key"]
 
     def get_response(self, message) -> None:
         headers = {
@@ -161,40 +161,43 @@ class Perplexity:
         print(result)
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("query", type=str, help="The query to process")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Debug mode")
-    parser.add_argument("-u", "--usage", action="store_true", help="Show usage")
-    parser.add_argument("-c", "--citations", action="store_true", help="Show citations")
-    parser.add_argument("-g", "--glow", action="store_true", help="Show citations")
-    parser.add_argument(
-        "-a",
-        "--api-key",
-        type=str,
-        help="Description for api_key argument",
-        required=False,
-    )
-    parser.add_argument(
-        "-m",
-        "--model",
-        type=str,
-        help="Description for model argument (default: sonar-pro) "
-        f"Available models: {AVAILABLE_MODELS}",
-        required=False,
-        default="sonar-pro",
-    )
-    args = parser.parse_args()
-    log_level = logging.DEBUG if args.verbose else logging.WARNING
+@click.command()
+@click.argument("query")
+@click.option("-v", "--verbose", is_flag=True, help="Debug mode")
+@click.option("-u", "--usage", is_flag=True, help="Show usage")
+@click.option("-c", "--citations", is_flag=True, help="Show citations")
+@click.option("-g", "--glow", is_flag=True, help="Show citations")
+@click.option(
+    "-a", "--api-key", type=str, required=False, help="Description for api_key argument"
+)
+@click.option(
+    "-m",
+    "--model",
+    type=str,
+    default="sonar-pro",
+    help="Description for model argument (default: sonar-pro) "
+         f"Available models: {AVAILABLE_MODELS}",
+    show_default=True,
+)
+def main(query, verbose, usage, citations, glow, api_key, model):
+    # Set up logging
+    log_level = logging.DEBUG if verbose else logging.WARNING
     logging.basicConfig(
         level=log_level,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    logger.debug(f"args: {args}")
+    logger.debug("Inside main click command")
+    args_dict = {
+        "usage": usage,
+        "citations": citations,
+        "glow": glow,
+        "api_key": api_key,
+        "model": model,
+    }
     try:
-        perplexity = Perplexity(args)
-        perplexity.get_response(args.query)
+        perplexity = Perplexity(args_dict)
+        perplexity.get_response(query)
     except Exception as e:
         logger.debug(f"An error occurred: {str(e)}")
         sys.exit(1)
