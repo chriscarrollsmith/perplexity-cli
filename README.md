@@ -1,63 +1,73 @@
-## Perplexity CLI 🔎
-![screen](docs/screen.png)
-Perplexity CLI is a simple and convenient command-line client for the Perplexity API, allowing users to quickly ask questions and receive answers directly from the terminal.
+# Perplexity CLI
 
-## Features
--   Easy querying of the Perplexity API
--   Support for various language models
--   Optional display of token usage statistics
--   Optional display of citations
--   Colorful output formatting (with glow support)
--   API key handling from environment variable or command-line argument
-
-## Requirements
--   Python 3.6+
--   `requests` library
+Perplexity CLI is a command-line interface for interacting with the Perplexity API. This CLI tool uses the [Click](https://click.palletsprojects.com/) library for building commands.
 
 ## Installation
-No installation is required. You can run the script directly from the GitHub repository or install it locally.Example of local installation:
+
+You can install Perplexity CLI directly from the GitHub repository:
 
 ```bash
-curl -s https://raw.githubusercontent.com/dawid-szewc/perplexity-cli/main/perplexity.py > ~/.local/bin/perplexity \
-chmod +x ~/.local/bin/perplexity \
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc \
-echo 'export PERPLEXITY_API_KEY="your-api-key"' >> ~/.bashrc
+pip install git+https://github.com/chriscarrollsmith/perplexity-cli.git
 ```
-## Usage
+
+=If you are installing on a system where you don't have administrative privileges, you can install the tool in your user environment with the `--user` flag:
+
 ```bash
-perplexity "What is the meaning of life?"
+pip install --user git+https://github.com/chriscarrollsmith/perplexity-cli.git
 ```
 
-## With Additional Options
+After a user installation, make sure that your local binary directory is in your PATH. For example, add the following line to your shell configuration file (e.g. `.bashrc` or `.zshrc`):
+
 ```bash
-perplexity -uc -m sonar-pro "Explain Einstein's theory of relativity"
+export PATH="$HOME/.local/bin:$PATH"
 ```
-
-## Options
--   `-v`, `--verbose`: Enable debug mode
--   `-u`, `--usage`: Show token usage statistics
--   `-c`, `--citations`: Show citations
--   `-g`, `--glow`: Use Glow-compatible formatting
--   `-a API_KEY`, `--api-key API_KEY`: Set the API key (optional, defaults to `PERPLEXITY_API_KEY` environment variable)
--   `-m MODEL`, `--model MODEL`: Choose the language model (default: sonar-pro)
-
-## Available Models
--   sonar-reasoning-pro
--   sonar-reasoning
--   sonar-pro
--   sonar
 
 ## Configuration
-Set the `PERPLEXITY_API_KEY` environment variable with your Perplexity API key:
+
+The tool requires an API key to interact with the Perplexity API. You can provide the API key using the `--api-key` option or by setting it as an environment variable:
+
 ```bash
-export PERPLEXITY_API_KEY="your-api-key"
-``` 
+export PERPLEXITY_API_KEY="your_api_key_here"
+```
 
-## License
-This project is released under the MIT License.
+To permanently set the API key, add the above command to your `.bashrc` or `.zshrc` file:
 
-## Author
-Dawid Szewc
+```bash
+echo "export PERPLEXITY_API_KEY='your_api_key_here'" >> ~/.bashrc
+```
 
-## Contributing
-We welcome issue reports and suggestions for improvements through GitHub Issues.It's worth noting that the project is actively developed and may contain additional features or changes not included in this description. It's recommended to check the latest documentation in the GitHub repository for the most up-to-date information.
+## Usage
+
+Run the CLI by providing a query and desired options:
+
+```bash
+perplexity-cli "Your query here" [options]
+```
+
+### Options
+
+- `-v, --verbose` &ndash; Enable debug mode.
+- `-u, --usage` &ndash; Show usage details.
+- `-c, --citations` &ndash; Show citations.
+- `-g, --glow` &ndash; Enable glow display mode.
+- `-a, --api-key` &ndash; Specify the API key directly.
+- `-m, --model` &ndash; Select the model to use (default is `sonar-pro`).  
+  **Available models:** `sonar-reasoning-pro`, `sonar-reasoning`, `sonar-pro`, `sonar`.
+
+## Example
+
+```bash
+perplexity-cli "What is the capital of France?" -v -c -u -m sonar-pro
+```
+
+## Repository
+
+For the latest updates, to file issues, or to contribute, please visit the GitHub repository at:  
+[https://github.com/chriscarrollsmith/perplexity-cli](https://github.com/chriscarrollsmith/perplexity-cli)
+```
+
+### Explanation
+
+- **Installation Section:** Updated to instruct users to install directly from the GitHub repository.
+- **Repository Link:** Added a link to the GitHub repo for quick access to source code and further updates.
+- **Usage and Options:** Provided clear instructions on how to run the CLI along with a full list of options available.
