@@ -7,13 +7,13 @@ Perplexity CLI is a command-line interface for interacting with the Perplexity A
 You can install Perplexity CLI directly from the GitHub repository:
 
 ```bash
-pip install git+https://github.com/chriscarrollsmith/perplexity-cli.git
+python pip install git+https://github.com/chriscarrollsmith/perplexity-cli.git
 ```
 
 =If you are installing on a system where you don't have administrative privileges, you can install the tool in your user environment with the `--user` flag:
 
 ```bash
-pip install --user git+https://github.com/chriscarrollsmith/perplexity-cli.git
+python pip install --user git+https://github.com/chriscarrollsmith/perplexity-cli.git
 ```
 
 After a user installation, make sure that your local binary directory is in your PATH. For example, add the following line to your shell configuration file (e.g. `.bashrc` or `.zshrc`):
@@ -41,7 +41,7 @@ echo "export PERPLEXITY_API_KEY='your_api_key_here'" >> ~/.bashrc
 Run the CLI by providing a query and desired options:
 
 ```bash
-perplexity-cli "Your query here" [options]
+perplexity "Your query here" [options]
 ```
 
 ### Options
@@ -57,7 +57,7 @@ perplexity-cli "Your query here" [options]
 ## Example
 
 ```bash
-perplexity-cli "What is the capital of France?" -v -c -u -m sonar-pro
+perplexity "What is the capital of France?" -v -c -u -m sonar-pro
 ```
 
 ## Repository
